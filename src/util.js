@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-12 15:52:39
+* @Last Modified time: 2016-05-12 23:48:09
 */
 
 'use strict';
@@ -128,30 +128,17 @@ var util = {
     } else {
 
       // single-glob-pattern
-      glob(srcPattern, noErr(function(files) {
-        files.forEach(function(file) {
+      glob.sync(srcPattern, {
+        nodir: true
+      }).forEach(function(file) {
 
-          // read from source and write to dist
-          console.log('Copy file: ' + file);
-          var basename = path.basename(file);
-          fs.readFile(file, noErr(function(data) {
-            fs.writeFile(path.join(targetDir, basename), data);
-          }));
-        });
-      }));
+        // read from source and write to dist
+        console.log('Copy file: ' + file);
+        var target = path.join(targetDir, path.basename(file));
+        fs.writeFileSync(target, fs.readFileSync(file));
+      });
     }
   }
 };
-
-// no error callback
-function noErr(callback) {
-  return function(err, data) {
-    if (!err) {
-      callback(data);
-    } else {
-      console.error(err);
-    }
-  }
-}
 
 module.exports = util;

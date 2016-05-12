@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-12 17:27:19
+* @Last Modified time: 2016-05-12 20:37:12
 */
 
 'use strict';
@@ -55,12 +55,11 @@ module.exports = {
     var startStamp = Date.now();
 
     // copy task
-    mkdirp(util.cwdPath(dist), function() {
-      util.copy([
-        util.cwdPath(src, 'lib', '**', '*.*'),
-        util.cwdPath('html', '**', '*.*')
-      ], util.cwdPath(dist));
-    });
+    mkdirp.sync(util.cwdPath(dist));
+    util.copy([
+      util.cwdPath(src, 'lib', '**', '*.*'),
+      util.cwdPath('html', '**', '*.*')
+    ], util.cwdPath(dist));
 
     // enable es2015 loose mode
     if (loose) {
@@ -117,10 +116,8 @@ module.exports = {
       });
       var oldPercentage = 0;
       plugins.push(new webpack.ProgressPlugin(function handler(percentage) {
-        if (percentage > 0.1) {
-          bar.tick(percentage - oldPercentage);
-          oldPercentage = percentage;
-        }
+        bar.tick(percentage - oldPercentage);
+        oldPercentage = percentage;
       }));
     }
 
