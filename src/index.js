@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-12 20:37:12
+* @Last Modified time: 2016-05-13 10:11:48
 */
 
 'use strict';
@@ -180,7 +180,7 @@ module.exports = {
             publicPath: '/'
           },
           plugins: plugins.concat([
-            new webpack.DefinePlugin(vars)
+            new webpack.DefinePlugin(util.parseVars(vars))
           ]),
           resolve: resolve,
           resolveLoader: resolveLoader,

@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-12 23:48:09
+* @Last Modified time: 2016-05-13 10:11:32
 */
 
 'use strict';
@@ -48,6 +48,15 @@ var util = {
       }
     });
     return entries;
+  },
+
+  // parse vars for DefinePlugin
+  parseVars: function(vars) {
+    var newVars = {};
+    for (var key in vars) {
+      newVars[key] = JSON.stringify(vars[key]);
+    }
+    return newVars;
   },
 
   // make filename suffix by vars
