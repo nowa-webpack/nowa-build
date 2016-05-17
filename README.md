@@ -20,5 +20,5 @@ $ npm i nowa-build -g
 ## Usage
 
 ```bash
-$ nowa help build
+$ nowa build --help
 ```

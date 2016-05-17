@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-13 10:11:32
+* @Last Modified time: 2016-05-15 19:37:39
 */
 
 'use strict';
@@ -48,6 +48,18 @@ var util = {
       }
     });
     return entries;
+  },
+
+  // merge vars to buildvars
+  parseBuildVars: function(vars, buildvars) {
+    var key, newVars = {};
+    for (key in vars) {
+      newVars[key] = [ vars[key] ];
+    }
+    for (key in buildvars) {
+      newVars[key] = buildvars[key];
+    }
+    return newVars;
   },
 
   // parse vars for DefinePlugin

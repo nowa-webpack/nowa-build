@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-13 10:11:48
+* @Last Modified time: 2016-05-15 19:39:32
 */
 
 'use strict';
@@ -27,6 +27,7 @@ module.exports = {
     [ '-e  --entry [file]', 'app entry, default to `app/app.js`', 'app/app.js' ],
     [ '    --pages', 'add multi-page entries' ],
     [ '    --buildvars', 'build varibles' ],
+    [ '    --vars', 'runtime varibles' ],
     [ '    --externals', 'webpack external varibles' ],
     [ '-o, --loose', 'use babel es2015 loose mode to transform codes' ],
     [ '-c, --keepconsole', 'keep `console.log`' ],
@@ -41,7 +42,8 @@ module.exports = {
     var dist = options.dist;
     var entry = options.entry;
     var pages = options.pages;
-    var buildvars = options.buildvars || {};
+    var vars = options.vars || {};
+    var buildvars = util.parseBuildVars(vars, options.buildvars || {});
     var externals = options.externals || {
       'react': 'window.React',
       'react-dom': 'window.ReactDOM || window.React'
@@ -168,11 +170,21 @@ module.exports = {
       });
     };
 
+    // compiler pre-process
+    var preProcess = function(config) {
+      var newConfig;
+      try {
+        newConfig = require(util.cwdPath('webpack.dev.js'))(config);
+      } catch (e) {
+      }
+      return newConfig || config;
+    };
+
     // run compiler
     if (combinations.length > 1) { // multi-compilers
 
       webpack(combinations.map(function(vars, index) {
-        return {
+        return preProcess({
           entry: entries,
           output: {
             path: util.cwdPath(dist),
@@ -188,7 +200,7 @@ module.exports = {
           module: {
             loaders: loader(options, index === 0)
           }
-        };
+        });
       }), function(err, stats) {
 
         // print wepack compile result
@@ -220,7 +232,7 @@ module.exports = {
 
     } else { // single-compiler
 
-      webpack({
+      webpack(preProcess({
         entry: entries,
         output: {
           path: util.cwdPath(dist),
@@ -234,7 +246,7 @@ module.exports = {
         module: {
           loaders: loader(options, true)
         }
-      }, function(err, stats) {
+      }), function(err, stats) {
 
         // print wepack compile result
         if (err) {
