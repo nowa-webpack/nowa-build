@@ -13,8 +13,8 @@ nowa webpack builder
 ## Install
 
 ```bash
-$ npm i nowa
-$ npm i nowa-build -g
+$ npm i nowa -g
+$ nowa install build
 ```
 
 ## Usage
