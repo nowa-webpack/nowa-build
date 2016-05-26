@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-18 17:22:49
+* @Last Modified time: 2016-05-23 19:38:25
 */
 
 'use strict';
@@ -22,9 +22,9 @@ module.exports = {
   description: pkg.description,
 
   options: [
-    [ '-s, --src [dir]', 'source directory, default to `src`', 'src' ],
-    [ '-d, --dist [dir]', 'build directory, default to `dist`', 'dist' ],
-    [ '-e  --entry [file]', 'app entry, default to `app/app.js`', 'app/app.js' ],
+    [ '-s, --src <dir>', 'source directory, default to `src`', 'src' ],
+    [ '-d, --dist <dir>', 'build directory, default to `dist`', 'dist' ],
+    [ '-e  --entry <file>', 'app entry, default to `app/app.js`', 'app/app.js' ],
     [ '    --pages', 'add multi-page entries' ],
     [ '    --buildvars', 'build varibles' ],
     [ '    --vars', 'runtime varibles' ],
