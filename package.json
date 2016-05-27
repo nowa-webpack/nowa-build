@@ -25,7 +25,6 @@
     "babel-core": "~6.8.0",
     "babel-loader": "~6.2.4",
     "clean-css": "~3.4.12",
-    "commander": "~2.9.0",
     "css-loader": "~0.23.1",
     "export-css-loader": "~1.1.1",
     "extract-text-webpack-plugin": "~1.0.1",
