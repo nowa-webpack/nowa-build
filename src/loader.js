@@ -2,10 +2,12 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-10 17:19:35
+* @Last Modified time: 2016-06-02 14:13:05
 */
 
 'use strict';
+
+var os = require('os');
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -28,7 +30,8 @@ module.exports = function(options, firstRun) {
         'transform-es3-member-expression-literals',
         'transform-es3-property-literals'
       ]),
-      presets: presets
+      presets: presets,
+      cacheDirectory: os.tmpdir()
     }
   }, {
     test: /\.css$/,
@@ -47,7 +50,8 @@ module.exports = function(options, firstRun) {
     loader: 'babel',
     include: srcPath,
     query: {
-      presets: presets
+      presets: presets,
+      cacheDirectory: os.tmpdir()
     }
   }, {
     test: /\.svg$/,

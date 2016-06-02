@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-05-15 19:37:39
+* @Last Modified time: 2016-06-02 21:51:15
 */
 
 'use strict';
@@ -111,29 +111,42 @@ var util = {
   // callback: callback after job done
   loadBalancing: function(objects, jobPath, params, callback) {
 
-    // create and balancing task pool
-    var pool = [];
-    var size = Math.min(os.cpus().length, objects.length);
-    for (var i = 0; i < size; i++) {
-      pool.push([]);
-    }
-    var cur = 0;
-    objects.forEach(function(obj) {
-      pool[cur].push(obj);
-      cur = (cur + 1) % size;
-    });
+    var size = Math.min(os.cpus().length - 1, objects.length);
+    var cursor = 0;
+    while (cursor < size) {
 
-    // create and awake threads
-    pool.forEach(function(queue) {
-      var thread = cp.fork(jobPath);
-      thread.on('exit', function() {
-        !(--size) && callback && callback();
+      // create new thread
+      let thread = cp.fork(jobPath);
+
+      // task finish message
+      thread.on('message', function(msg) {
+
+        // has tasks to do
+        if (cursor < objects.length) {
+          thread.send({
+            cursor: cursor,
+            object: objects[cursor++],
+            params: params
+          });
+
+        // all tasks sent
+        } else {
+          thread.kill('SIGINT');
+
+          // all tasks done
+          if (msg.cursor === objects.length - 1) {
+            callback && callback();
+          }
+        }
       });
+
+      // send first task
       thread.send({
-        queue: queue,
+        cursor: cursor,
+        object: objects[cursor++],
         params: params
       });
-    });
+    }
   },
 
   // copy files to dir
