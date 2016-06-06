@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-06-02 21:36:58
+* @Last Modified time: 2016-06-06 10:48:37
 */
 
 'use strict';
@@ -11,6 +11,7 @@ var mkdirp = require('mkdirp');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var Progress = require('progress');
+var Balancer = require('load-balancer');
 
 var util = require('./util');
 var loader = require('./loader');
@@ -161,11 +162,11 @@ module.exports = {
     var minify = skipminify ? function() {
       console.log('Finished in ' + ((Date.now() - startStamp) / 1000).toFixed(2) + 's');
     } : function(assets) {
-      util.loadBalancing(assets.map(function(a) {
-        return util.cwdPath(dist, a.name);
-      }), util.relPath('minify.js'), {
+      new Balancer.Master().send(util.relPath('minify.js'), {
         keepconsole: keepconsole
-      }, function() {
+      }, assets.map(function(a) {
+        return util.cwdPath(dist, a.name);
+      }), function() {
         console.log('Finished in ' + ((Date.now() - startStamp) / 1000).toFixed(2) + 's');
       });
     };

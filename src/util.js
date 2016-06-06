@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-06-02 21:51:15
+* @Last Modified time: 2016-06-06 10:51:51
 */
 
 'use strict';
@@ -101,51 +101,6 @@ var util = {
         type,
         name
       ].join('-'));
-    }
-  },
-
-  // load balancing
-  // objects: objects to process
-  // jobPath: job to run
-  // params: extra params pass into job
-  // callback: callback after job done
-  loadBalancing: function(objects, jobPath, params, callback) {
-
-    var size = Math.min(os.cpus().length - 1, objects.length);
-    var cursor = 0;
-    while (cursor < size) {
-
-      // create new thread
-      let thread = cp.fork(jobPath);
-
-      // task finish message
-      thread.on('message', function(msg) {
-
-        // has tasks to do
-        if (cursor < objects.length) {
-          thread.send({
-            cursor: cursor,
-            object: objects[cursor++],
-            params: params
-          });
-
-        // all tasks sent
-        } else {
-          thread.kill('SIGINT');
-
-          // all tasks done
-          if (msg.cursor === objects.length - 1) {
-            callback && callback();
-          }
-        }
-      });
-
-      // send first task
-      thread.send({
-        cursor: cursor,
-        object: objects[cursor++],
-        params: params
-      });
     }
   },
 
