@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-06-02 14:13:05
+* @Last Modified time: 2016-06-10 17:51:50
 */
 
 'use strict';
@@ -15,11 +15,27 @@ var util = require('./util');
 
 module.exports = function(options, firstRun) {
   var srcPath = util.cwdPath(options.src);
+  var exportcss = options.exportcss !== false;
   var presets = util.babel('preset', [
     'es2015',
     'stage-0',
     'react'
   ]);
+  var makeLoader = function(remainLoader) {
+    var loaders = 'css-loader';
+    if (remainLoader) {
+      loaders += '!' + remainLoader + '-loader';
+    }
+    if (exportcss) {
+      if (firstRun) {
+        return ExtractTextPlugin.extract('style-loader', loaders);
+      } else {
+        return 'export-css-loader?remove=true&write=false!' + loaders;
+      }
+    } else {
+      return 'style-loader!' + loaders;
+    }
+  }
   return [{
     test: /\.jsx?$/,
     loader: 'babel',
@@ -35,15 +51,15 @@ module.exports = function(options, firstRun) {
     }
   }, {
     test: /\.css$/,
-    loader: firstRun ? ExtractTextPlugin.extract('style-loader', 'css-loader') : 'export-css?remove=true&write=false!css',
+    loader: makeLoader(),
     include: srcPath
   }, {
     test: /\.less$/,
-    loader: firstRun ? ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader') : 'export-css?remove=true&write=false!css!less',
+    loader: makeLoader('less'),
     include: srcPath
   }, {
     test: /\.styl$/,
-    loader: firstRun ? ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader') : 'export-css?remove=true&write=false!css!stylus',
+    loader: makeLoader('stylus'),
     include: srcPath
   }, {
     test: /\.svg$/,

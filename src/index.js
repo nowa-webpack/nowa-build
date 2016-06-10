@@ -1,8 +1,8 @@
 /*
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
-* @Last Modified by:   gbk
-* @Last Modified time: 2016-06-06 10:48:37
+* @Last Modified by:   caoke
+* @Last Modified time: 2016-06-10 17:26:25
 */
 
 'use strict';
@@ -33,7 +33,8 @@ module.exports = {
     [ '-o, --loose', 'use babel es2015 loose mode to transform codes' ],
     [ '-c, --keepconsole', 'keep `console.log`' ],
     [ '    --skipminify', 'skip minify js and css' ],
-    [ '-p, --progress', 'show progress' ]
+    [ '-p, --progress', 'show progress' ],
+    [ '    --exportcss', 'export css files' ]
   ],
 
   action: function(options) {
@@ -53,6 +54,7 @@ module.exports = {
     var keepconsole = options.keepconsole;
     var skipminify = options.skipminify;
     var showProgress = options.progress;
+    var exportcss = options.exportcss !== false;
 
     // start time stamp
     var startStamp = Date.now();
@@ -109,9 +111,11 @@ module.exports = {
 
     // plugins
     var plugins = [
-      new webpack.optimize.OccurenceOrderPlugin(),
-      new ExtractTextPlugin('[name].css')
+      new webpack.optimize.OccurenceOrderPlugin()
     ];
+    if (exportcss) {
+      plugins.push(new ExtractTextPlugin('[name].css'));
+    }
     if (showProgress) {
       var bar = new Progress('webpack compile [:bar]', {
         total: 1,
