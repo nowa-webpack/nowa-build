@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-06-16 14:47:36
+* @Last Modified time: 2016-06-30 15:40:02
 */
 
 'use strict';
@@ -93,9 +93,9 @@ module.exports = {
 
     // resolve
     var resolve = {
-      modulesDirectories: [
-        'node_modules',
-        util.relPath('..', 'node_modules')
+      root: [
+        util.relPath('..', 'node_modules'),
+        util.relPath('..', '..')
       ],
       alias: {
         i18n: util.cwdPath(src, 'i18n')
@@ -103,9 +103,9 @@ module.exports = {
     };
 
     var resolveLoader = {
-      modulesDirectories: [
+      root: [
         util.relPath('..', 'node_modules'),
-        'node_modules'
+        util.relPath('..', '..')
       ]
     };
 
