@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-06-30 15:26:50
+* @Last Modified time: 2016-07-11 16:45:32
 */
 
 'use strict';
@@ -13,6 +13,7 @@ var path = require('path');
 var cp = require('child_process');
 
 var glob = require('glob');
+var mkdirp = require('mkdirp');
 
 var util = {
 
@@ -117,13 +118,15 @@ var util = {
     } else {
 
       // single-glob-pattern
+      var baseDir = srcPattern.split('**')[0];
       glob.sync(srcPattern, {
         nodir: true
       }).forEach(function(file) {
 
         // read from source and write to dist
         console.log('Copy file: ' + file);
-        var target = path.join(targetDir, path.basename(file));
+        var target = path.join(targetDir, path.relative(baseDir, file));
+        mkdirp.sync(path.dirname(target));
         fs.writeFileSync(target, fs.readFileSync(file));
       });
     }
