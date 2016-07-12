@@ -1,13 +1,14 @@
 /*
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
-* @Last Modified by:   gbk
-* @Last Modified time: 2016-06-10 17:51:50
+* @Last Modified by:   caoke
+* @Last Modified time: 2016-07-12 21:39:09
 */
 
 'use strict';
 
 var os = require('os');
+var path = require('path');
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -21,6 +22,7 @@ module.exports = function(options, firstRun) {
     'stage-0',
     'react'
   ]);
+  var cacheDirectory = path.join(os.tmpdir(), options.loose ? 'babel-loose' : 'babel-strict');
   var makeLoader = function(remainLoader) {
     var loaders = 'css-loader';
     if (remainLoader) {
@@ -47,7 +49,7 @@ module.exports = function(options, firstRun) {
         'transform-es3-property-literals'
       ]),
       presets: presets,
-      cacheDirectory: os.tmpdir()
+      cacheDirectory: cacheDirectory
     }
   }, {
     test: /\.css$/,
@@ -67,7 +69,7 @@ module.exports = function(options, firstRun) {
     include: srcPath,
     query: {
       presets: presets,
-      cacheDirectory: os.tmpdir()
+      cacheDirectory: cacheDirectory
     }
   }, {
     test: /\.svg$/,
