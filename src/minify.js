@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-10 23:45:10
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-06-06 10:51:39
+* @Last Modified time: 2016-07-13 21:31:47
 */
 
 'use strict';
@@ -16,7 +16,13 @@ var cssnano = require('cssnano');
 var processer = new postcss([
   cssnano({
     autoprefixer: {
-      add: true
+      add: true,
+      browsers: [
+        '> 1%',
+        'iOS >= 7',
+        'Android >= 2.3',
+        'FireFoxAndroid >= 46'
+      ]
     }
   })
 ]);
