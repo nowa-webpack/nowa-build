@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-10 23:45:10
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-07-13 21:31:47
+* @Last Modified time: 2016-07-15 11:13:26
 */
 
 'use strict';
@@ -15,6 +15,12 @@ var postcss = require('postcss');
 var cssnano = require('cssnano');
 var processer = new postcss([
   cssnano({
+    postcssDiscardUnused: {
+      disable: true
+    },
+    postcssZindex: {
+      disable: true
+    },
     autoprefixer: {
       add: true,
       browsers: [
