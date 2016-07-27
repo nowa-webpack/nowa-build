@@ -1,8 +1,8 @@
 /*
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
-* @Last Modified by:   caoke
-* @Last Modified time: 2016-07-12 21:39:09
+* @Last Modified by:   曹柯
+* @Last Modified time: 2016-07-27 11:26:59
 */
 
 'use strict';
@@ -49,7 +49,8 @@ module.exports = function(options, firstRun) {
         'transform-es3-property-literals'
       ]),
       presets: presets,
-      cacheDirectory: cacheDirectory
+      cacheDirectory: cacheDirectory,
+      babelrc: false
     }
   }, {
     test: /\.css$/,
@@ -69,7 +70,8 @@ module.exports = function(options, firstRun) {
     include: srcPath,
     query: {
       presets: presets,
-      cacheDirectory: cacheDirectory
+      cacheDirectory: cacheDirectory,
+      babelrc: false
     }
   }, {
     test: /\.svg$/,
