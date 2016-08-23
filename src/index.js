@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-06-30 15:40:02
+* @Last Modified time: 2016-08-23 19:35:06
 */
 
 'use strict';
@@ -34,7 +34,10 @@ module.exports = {
     [ '-c, --keepconsole', 'keep `console.log`' ],
     [ '    --skipminify', 'skip minify js and css' ],
     [ '-p, --progress', 'show progress' ],
-    [ '    --exportcss', 'export css files' ]
+    [ '    --exportcss', 'export css files' ],
+    [ '    --multiCompilers', 'generate multi-compilers' ],
+    [ '    --minifyExtension <extension>', 'minify file extension' ],
+    [ '    --includes', 'loader should include paths' ],
   ],
 
   action: function(options) {
@@ -55,6 +58,9 @@ module.exports = {
     var skipminify = options.skipminify;
     var showProgress = options.progress;
     var exportcss = options.exportcss !== false;
+    var multiCompilers = !!options.multiCompilers;
+    var minifyExtension = options.minifyExtension;
+    var includes = options.includes;
 
     // start time stamp
     var startStamp = Date.now();
@@ -167,7 +173,8 @@ module.exports = {
       console.log('Finished in ' + ((Date.now() - startStamp) / 1000).toFixed(2) + 's');
     } : function(assets) {
       new Balancer.Master().send(util.relPath('minify.js'), {
-        keepconsole: keepconsole
+        keepconsole: keepconsole,
+        minifyExtension: minifyExtension
       }, assets.map(function(a) {
         return util.cwdPath(dist, a.name);
       }), function() {
@@ -186,9 +193,9 @@ module.exports = {
     };
 
     // run compiler
-    if (combinations.length > 1) { // multi-compilers
+    if (combinations.length > 1 || multiCompilers) { // multi-compilers
 
-      webpack(combinations.map(function(vars, index) {
+      var compilers = combinations.length > 1 ? combinations.map(function(vars, index) {
         return preProcess({
           entry: entries,
           output: {
@@ -207,7 +214,24 @@ module.exports = {
             loaders: loader(options, index === 0)
           }
         });
-      }), function(err, stats) {
+      }) : preProcess({
+          entry: entries,
+          output: {
+            path: util.cwdPath(dist),
+            filename: '[name].js',
+            publicPath: '/'
+          },
+          plugins: plugins,
+          resolve: resolve,
+          resolveLoader: resolveLoader,
+          externals: externals,
+          cache: true,
+          module: {
+            loaders: loader(options)
+          }
+        });
+
+      webpack(compilers, function(err, stats) {
 
         // print wepack compile result
         if (err) {

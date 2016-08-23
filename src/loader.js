@@ -1,8 +1,8 @@
 /*
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
-* @Last Modified by:   曹柯
-* @Last Modified time: 2016-07-27 11:26:59
+* @Last Modified by:   gbk
+* @Last Modified time: 2016-08-23 16:07:41
 */
 
 'use strict';
@@ -16,6 +16,13 @@ var util = require('./util');
 
 module.exports = function(options, firstRun) {
   var srcPath = util.cwdPath(options.src);
+  if (options.includes) {
+    srcPath = [
+      srcPath
+    ].concat(options.includes.map(function(include) {
+      return util.cwdPath(include);
+    }));
+  }
   var exportcss = options.exportcss !== false;
   var presets = util.babel('preset', [
     'es2015',

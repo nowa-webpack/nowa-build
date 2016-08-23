@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-10 23:45:10
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-07-15 11:13:26
+* @Last Modified time: 2016-08-23 19:32:42
 */
 
 'use strict';
@@ -47,7 +47,7 @@ new Balancer.Worker().receive(function(master, context, file, callback) {
       },
       comments: false
     });
-    fs.writeFileSync(file, result.code);
+    fs.writeFileSync(file.replace(/\.js$/, context.minifyExtension + '.js'), result.code);
     callback();
 
   // minify css file
@@ -57,7 +57,7 @@ new Balancer.Worker().receive(function(master, context, file, callback) {
       from: file,
       to: file
     }).then(function(result) {
-      fs.writeFileSync(file, result.css);
+      fs.writeFileSync(file.replace(/\.css$/, context.minifyExtension + '.css'), result.css);
       callback();
     });
 
