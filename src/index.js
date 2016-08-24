@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-08-23 19:35:06
+* @Last Modified time: 2016-08-24 19:20:29
 */
 
 'use strict';
@@ -59,7 +59,7 @@ module.exports = {
     var showProgress = options.progress;
     var exportcss = options.exportcss !== false;
     var multiCompilers = !!options.multiCompilers;
-    var minifyExtension = options.minifyExtension;
+    var minifyExtension = options.minifyExtension || '';
     var includes = options.includes;
 
     // start time stamp
