@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-08-24 19:20:29
+* @Last Modified time: 2016-09-23 13:46:17
 */
 
 'use strict';
@@ -38,6 +38,7 @@ module.exports = {
     [ '    --multiCompilers', 'generate multi-compilers' ],
     [ '    --minifyExtension <extension>', 'minify file extension' ],
     [ '    --includes', 'loader should include paths' ],
+    [ '    --polyfill', 'use core-js to do polyfills' ],
   ],
 
   action: function(options) {
@@ -61,6 +62,7 @@ module.exports = {
     var multiCompilers = !!options.multiCompilers;
     var minifyExtension = options.minifyExtension || '';
     var includes = options.includes;
+    var polyfill = !!options.polyfill;
 
     // start time stamp
     var startStamp = Date.now();
@@ -71,23 +73,6 @@ module.exports = {
       util.cwdPath(src, 'lib', '**', '*.*'),
       util.cwdPath('html', '**', '*.*')
     ], util.cwdPath(dist));
-
-    // enable es2015 loose mode
-    if (loose) {
-
-      // modify es2015 presets, add `loose: true` option
-      var es2015Plugins = require(util.babel('preset', 'es2015')).plugins;
-      for (var i = 0; i < es2015Plugins.length; i++) {
-        if (Array.isArray(es2015Plugins[i])) {
-          es2015Plugins[i][1].loose = true;
-        } else {
-          es2015Plugins[i] = [
-            es2015Plugins[i],
-            { loose: true }
-          ];
-        }
-      }
-    }
 
     // entries
     var entries = {

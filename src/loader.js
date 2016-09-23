@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-08-23 16:07:41
+* @Last Modified time: 2016-09-23 13:20:34
 */
 
 'use strict';
@@ -25,7 +25,12 @@ module.exports = function(options, firstRun) {
   }
   var exportcss = options.exportcss !== false;
   var presets = util.babel('preset', [
-    'es2015',
+    {
+      name: 'es2015',
+      options: {
+        loose: !!options.loose
+      }
+    },
     'stage-0',
     'react'
   ]);
@@ -53,7 +58,15 @@ module.exports = function(options, firstRun) {
       plugins: util.babel('plugin', [
         'add-module-exports',
         'transform-es3-member-expression-literals',
-        'transform-es3-property-literals'
+        'transform-es3-property-literals',
+        {
+          name: 'transform-runtime',
+          options: {
+            polyfill: !!options.polyfill,
+            helpers: false,
+            regenerator: true
+          }
+        }
       ]),
       presets: presets,
       cacheDirectory: cacheDirectory,
