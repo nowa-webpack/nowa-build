@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-09-23 13:20:34
+* @Last Modified time: 2016-09-27 22:15:34
 */
 
 'use strict';
@@ -71,6 +71,12 @@ module.exports = function(options, firstRun) {
       presets: presets,
       cacheDirectory: cacheDirectory,
       babelrc: false
+    }
+  }, {
+    test: /\.js$/,
+    loader: 'es3ify',
+    include: function(path) {
+      return ~path.indexOf('babel-runtime');
     }
   }, {
     test: /\.css$/,
