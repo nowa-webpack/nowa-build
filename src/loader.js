@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-09-27 22:15:34
+* @Last Modified time: 2016-10-23 23:57:42
 */
 
 'use strict';
@@ -108,7 +108,7 @@ module.exports = function(options, firstRun) {
     loader: 'json',
     include: srcPath
   }, {
-    test: /\.(png|jpe?g|gif)$/,
+    test: /\.(png|jpe?g|gif|woff|woff2|ttf|otf)$/,
     loader: 'url?limit=10240',
     include: srcPath
   }];
