@@ -1,6 +1,6 @@
 {
   "name": "nowa-build",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "nowa webpack builder",
   "main": "index.js",
   "scripts": {
