@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-09-23 13:46:17
+* @Last Modified time: 2016-11-18 23:24:38
 */
 
 'use strict';
@@ -39,6 +39,7 @@ module.exports = {
     [ '    --minifyExtension <extension>', 'minify file extension' ],
     [ '    --includes', 'loader should include paths' ],
     [ '    --polyfill', 'use core-js to do polyfills' ],
+    [ '    --mangle', 'mangle varibles when minify' ],
   ],
 
   action: function(options) {
@@ -63,6 +64,7 @@ module.exports = {
     var minifyExtension = options.minifyExtension || '';
     var includes = options.includes;
     var polyfill = !!options.polyfill;
+    var mangle = !!options.mangle;
 
     // start time stamp
     var startStamp = Date.now();
@@ -159,7 +161,8 @@ module.exports = {
     } : function(assets) {
       new Balancer.Master().send(util.relPath('minify.js'), {
         keepconsole: keepconsole,
-        minifyExtension: minifyExtension
+        minifyExtension: minifyExtension,
+        mangle: mangle
       }, assets.map(function(a) {
         return util.cwdPath(dist, a.name);
       }), function() {

@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-10 23:45:10
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-08-23 19:32:42
+* @Last Modified time: 2016-11-18 23:24:51
 */
 
 'use strict';
@@ -40,7 +40,7 @@ new Balancer.Worker().receive(function(master, context, file, callback) {
   if (/\.js$/.test(file)) {
     console.log('Minify file: ' + file);
     var result = UglifyJs.minify(file, {
-      mangle: false,
+      mangle: context.mangle,
       compress: {
         warnings: false,
         drop_console: !context.keepconsole
