@@ -1,8 +1,8 @@
 /*
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
-* @Last Modified by:   gbk
-* @Last Modified time: 2016-09-22 21:53:22
+* @Last Modified by:   tommytroylin
+* @Last Modified time: 2016-11-21 17:39:48
 */
 
 'use strict';
@@ -44,6 +44,14 @@ var util = {
         var entry = path.join(src, 'pages', page, 'index.js');
         if (fs.statSync(entry).isFile()) {
           entries[page] = util.makeEntry(src, 'pages', page, 'index.js');
+          return;
+        }
+      } catch (e) {
+      }
+      try {
+        var entry = path.join(src, 'pages', page, 'index.jsx');
+        if (fs.statSync(entry).isFile()) {
+          entries[page] = util.makeEntry(src, 'pages', page, 'index.jsx');
         }
       } catch (e) {
       }
