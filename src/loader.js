@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-11-16 20:28:34
+* @Last Modified time: 2016-11-24 10:51:58
 */
 
 'use strict';
@@ -109,7 +109,7 @@ module.exports = function(options, firstRun) {
     include: srcPath
   }, {
     test: /\.(png|jpe?g|gif|woff|woff2|ttf|otf)$/,
-    loader: 'url?limit=10240',
+    loader: 'url?limit=10240&publicPath=./',
     include: srcPath
   }];
 };
