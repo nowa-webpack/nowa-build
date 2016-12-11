@@ -1,8 +1,8 @@
 /*
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
-* @Last Modified by:   tommytroylin
-* @Last Modified time: 2016-11-21 17:37:24
+* @Last Modified by:   gbk
+* @Last Modified time: 2016-12-11 20:37:09
 */
 
 'use strict';
@@ -40,6 +40,7 @@ module.exports = {
     [ '    --includes', 'loader should include paths' ],
     [ '    --polyfill', 'use core-js to do polyfills' ],
     [ '    --mangle', 'mangle varibles when minify' ],
+    [ '    --alias', 'path alias' ],
   ],
 
   action: function(options) {
@@ -65,6 +66,14 @@ module.exports = {
     var includes = options.includes;
     var polyfill = !!options.polyfill;
     var mangle = !!options.mangle;
+    var alias = (function(aliasMap) {
+      for (var key in aliasMap) {
+        aliasMap[key] = util.cwdPath(src, aliasMap[key]);
+      }
+      return aliasMap;
+    })(options.alias || {
+      i18n: 'i18n'
+    });
 
     // start time stamp
     var startStamp = Date.now();
@@ -90,9 +99,7 @@ module.exports = {
         util.relPath('..', 'node_modules'),
         util.relPath('..', '..')
       ],
-      alias: {
-        i18n: util.cwdPath(src, 'i18n')
-      },
+      alias: alias,
       extensions: ['', '.js', '.jsx']
     };
 
