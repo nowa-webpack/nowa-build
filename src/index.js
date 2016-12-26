@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-12-13 13:27:38
+* @Last Modified time: 2016-12-26 19:24:02
 */
 
 'use strict';
@@ -94,20 +94,19 @@ module.exports = {
     }
 
     // resolve
+    var resolveRoot = [
+      util.relPath('..', 'node_modules')
+    ];
+    if (process.cwd() !== util.relPath('..', '..', '..')) {
+      resolveRoot.push(util.relPath('..', '..'));
+    }
     var resolve = {
-      root: [
-        util.relPath('..', 'node_modules'),
-        util.relPath('..', '..')
-      ],
+      root: resolveRoot,
       alias: alias,
       extensions: ['', '.js', '.jsx']
     };
-
     var resolveLoader = {
-      root: [
-        util.relPath('..', 'node_modules'),
-        util.relPath('..', '..')
-      ]
+      root: resolveRoot
     };
 
     // plugins
