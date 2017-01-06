@@ -23,6 +23,7 @@ module.exports = {
   description: pkg.description,
 
   options: [
+    [ '-c, --config <file>', 'custom webpack configuration file'],
     [ '-s, --src <dir>', 'source directory, default to `src`', 'src' ],
     [ '-d, --dist <dir>', 'build directory, default to `dist`', 'dist' ],
     [ '-e  --entry <file>', 'app entry, default to `app/app.js`', 'app/app.js' ],
@@ -31,7 +32,7 @@ module.exports = {
     [ '    --vars', 'runtime varibles' ],
     [ '    --externals', 'webpack external varibles' ],
     [ '-o, --loose', 'use babel es2015 loose mode to transform codes' ],
-    [ '-c, --keepconsole', 'keep `console.log`' ],
+    [ '    --keepconsole', 'keep `console.log`' ],
     [ '    --skipminify', 'skip minify js and css' ],
     [ '-p, --progress', 'show progress' ],
     [ '    --exportcss', 'export css files' ],
@@ -74,6 +75,7 @@ module.exports = {
     })(typeof options.alias === 'object' ? options.alias : {
       i18n: 'i18n'
     });
+    var config = require(options.config);
 
     // start time stamp
     var startStamp = Date.now();
@@ -161,6 +163,8 @@ module.exports = {
       }
       findRoute();
     }
+    // if none buildvar specficed, `false` as default build
+    if (combinations.length === 0) combinations.push(false);
 
     // minify task
     var minify = skipminify ? function() {
@@ -187,10 +191,17 @@ module.exports = {
       return newConfig || config;
     };
 
-    // run compiler
-    if (combinations.length > 1 || multiCompilers) { // multi-compilers
-
-      var compilers = combinations.length > 1 ? combinations.map(function(vars, index) {
+    // build compilers
+    var compilers = combinations.map(function(vars, index) {
+      if (options.config) {
+        var configCopy = Object.assign({}, config);
+        // add define plugin to inject vars
+        if (vars) {
+          configCopy.plugins = config.plugins
+            .slice(0).push(new webpack.DefinePlugin(util.parseVars(vars)));
+        }
+        return configCopy;
+      } else {
         return preProcess({
           entry: entries,
           output: {
@@ -198,9 +209,9 @@ module.exports = {
             filename: '[name]' + util.suffixByVars(vars, buildvars) + '.js',
             publicPath: '/'
           },
-          plugins: plugins.concat([
+          plugins: vars ? plugins.concat([
             new webpack.DefinePlugin(util.parseVars(vars))
-          ]),
+          ]) : plugins,
           resolve: resolve,
           resolveLoader: resolveLoader,
           externals: externals,
@@ -209,25 +220,12 @@ module.exports = {
             loaders: loader(options, index === 0)
           }
         });
-      }) : preProcess({
-          entry: entries,
-          output: {
-            path: util.cwdPath(dist),
-            filename: '[name].js',
-            publicPath: '/'
-          },
-          plugins: plugins,
-          resolve: resolve,
-          resolveLoader: resolveLoader,
-          externals: externals,
-          cache: true,
-          module: {
-            loaders: loader(options)
-          }
-        });
+      }
+    });
 
+    // maybe merge in some way
+    if (compilers.length > 1) {
       webpack(compilers, function(err, stats) {
-
         // print wepack compile result
         if (err) {
           console.error(err.toString());
@@ -254,31 +252,8 @@ module.exports = {
         // minify task
         minify(assets);
       });
-
-    } else { // single-compiler
-
-      // vars defined
-      if (combinations.length) {
-        plugins.push(new webpack.DefinePlugin(util.parseVars(combinations[0])));
-      }
-
-      webpack(preProcess({
-        entry: entries,
-        output: {
-          path: util.cwdPath(dist),
-          filename: '[name].js',
-          publicPath: '/'
-        },
-        plugins: plugins,
-        resolve: resolve,
-        resolveLoader: resolveLoader,
-        externals: externals,
-        cache: true,
-        module: {
-          loaders: loader(options, true)
-        }
-      }), function(err, stats) {
-
+    } else {
+      webpack(compilers[0], function(err, stats) {
         // print wepack compile result
         if (err) {
           console.error(err.toString());
@@ -298,7 +273,5 @@ module.exports = {
         }).assets);
       });
     }
-
   }
 };
-
