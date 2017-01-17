@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-11-24 10:51:58
+* @Last Modified time: 2017-01-17 21:12:55
 */
 
 'use strict';
@@ -52,7 +52,7 @@ module.exports = function(options, firstRun) {
   }
   return [{
     test: /\.jsx?$/,
-    loader: 'babel',
+    loader: 'babel-loader',
     include: srcPath,
     query: {
       plugins: util.babel('plugin', [
@@ -74,7 +74,7 @@ module.exports = function(options, firstRun) {
     }
   }, {
     test: /\.js$/,
-    loader: 'es3ify',
+    loader: 'es3ify-loader',
     include: function(path) {
       return ~path.indexOf('babel-runtime');
     }
@@ -92,7 +92,7 @@ module.exports = function(options, firstRun) {
     include: srcPath
   }, {
     test: /\.svg$/,
-    loader: 'babel',
+    loader: 'babel-loader',
     include: srcPath,
     query: {
       presets: presets,
@@ -101,15 +101,15 @@ module.exports = function(options, firstRun) {
     }
   }, {
     test: /\.svg$/,
-    loader: 'svg2react',
+    loader: 'svg2react-loader',
     include: srcPath
   }, {
     test: /\.json$/,
-    loader: 'json',
+    loader: 'json-loader',
     include: srcPath
   }, {
     test: /\.(png|jpe?g|gif|woff|woff2|ttf|otf)$/,
-    loader: 'url?limit=10240&publicPath=./',
+    loader: 'url-loader?limit=10240&publicPath=./',
     include: srcPath
   }];
 };
