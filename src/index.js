@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-12-26 19:24:02
+* @Last Modified time: 2017-02-27 15:15:09
 */
 
 'use strict';
@@ -187,6 +187,12 @@ module.exports = {
       return newConfig || config;
     };
 
+    // webpack build failed
+    var buildFail = function(msg) {
+      console.error('\nWebpack Build Failed.\n' + msg);
+      process.exit(1);
+    };
+
     // run compiler
     if (combinations.length > 1 || multiCompilers) { // multi-compilers
 
@@ -230,11 +236,14 @@ module.exports = {
 
         // print wepack compile result
         if (err) {
-          console.error(err.toString());
+          return buildFail(err.toString());
         }
         console.log('=============');
         var assets = [];
         stats.stats.forEach(function(stat) {
+          if (stat.hasErrors()) {
+            return buildFail(stat.toJson().errors[0].split('\n').slice(0, 2).join('\n'));
+          }
           console.log(stat.toString({
             version: false,
             hash: false,
@@ -281,7 +290,10 @@ module.exports = {
 
         // print wepack compile result
         if (err) {
-          console.error(err.toString());
+          return buildFail(err.toString());
+        }
+        if (stats.hasErrors()) {
+          return buildFail(stats.toJson().errors[0].split('\n').slice(0, 2).join('\n'));
         }
         console.log('\n' + stats.toString({
           hash: false,
