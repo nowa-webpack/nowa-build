@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-02-27 15:15:09
+* @Last Modified time: 2017-03-01 17:47:02
 */
 
 'use strict';
@@ -164,7 +164,7 @@ module.exports = {
 
     // minify task
     var minify = skipminify ? function() {
-      console.log('Finished in ' + ((Date.now() - startStamp) / 1000).toFixed(2) + 's');
+      util.finishLog(startStamp);
     } : function(assets) {
       new Balancer.Master().send(util.relPath('minify.js'), {
         keepconsole: keepconsole,
@@ -173,31 +173,15 @@ module.exports = {
       }, assets.map(function(a) {
         return util.cwdPath(dist, a.name);
       }), function() {
-        console.log('Finished in ' + ((Date.now() - startStamp) / 1000).toFixed(2) + 's');
+        util.finishLog(startStamp);
       });
-    };
-
-    // compiler pre-process
-    var preProcess = function(config) {
-      var newConfig;
-      try {
-        newConfig = require(util.cwdPath('webpack.config.js'))(config);
-      } catch (e) {
-      }
-      return newConfig || config;
-    };
-
-    // webpack build failed
-    var buildFail = function(msg) {
-      console.error('\nWebpack Build Failed.\n' + msg);
-      process.exit(1);
     };
 
     // run compiler
     if (combinations.length > 1 || multiCompilers) { // multi-compilers
 
       var compilers = combinations.length > 1 ? combinations.map(function(vars, index) {
-        return preProcess({
+        return util.preProcess({
           entry: entries,
           output: {
             path: util.cwdPath(dist),
@@ -215,7 +199,7 @@ module.exports = {
             loaders: loader(options, index === 0)
           }
         });
-      }) : preProcess({
+      }) : util.preProcess({
           entry: entries,
           output: {
             path: util.cwdPath(dist),
@@ -236,19 +220,20 @@ module.exports = {
 
         // print wepack compile result
         if (err) {
-          return buildFail(err.toString());
+          return util.buildFail(err.toString());
         }
         console.log('=============');
         var assets = [];
         stats.stats.forEach(function(stat) {
           if (stat.hasErrors()) {
-            return buildFail(stat.toJson().errors[0].split('\n').slice(0, 2).join('\n'));
+            return util.buildFail(stat.toJson().errors[0].split('\n').slice(0, 2).join('\n'));
           }
           console.log(stat.toString({
             version: false,
             hash: false,
             chunks: false,
-            children: false
+            children: false,
+            colors: true
           }) + '\n=============');
 
           // concat assets
@@ -271,7 +256,7 @@ module.exports = {
         plugins.push(new webpack.DefinePlugin(util.parseVars(combinations[0])));
       }
 
-      webpack(preProcess({
+      webpack(util.preProcess({
         entry: entries,
         output: {
           path: util.cwdPath(dist),
@@ -290,15 +275,16 @@ module.exports = {
 
         // print wepack compile result
         if (err) {
-          return buildFail(err.toString());
+          return util.buildFail(err.toString());
         }
         if (stats.hasErrors()) {
-          return buildFail(stats.toJson().errors[0].split('\n').slice(0, 2).join('\n'));
+          return util.buildFail(stats.toJson().errors[0].split('\n').slice(0, 2).join('\n'));
         }
         console.log('\n' + stats.toString({
           hash: false,
           chunks: false,
-          children: false
+          children: false,
+          colors: true
         }));
 
         // minify task

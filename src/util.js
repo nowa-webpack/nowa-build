@@ -1,8 +1,8 @@
 /*
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
-* @Last Modified by:   tommytroylin
-* @Last Modified time: 2016-11-21 17:39:48
+* @Last Modified by:   gbk
+* @Last Modified time: 2017-03-01 17:44:44
 */
 
 'use strict';
@@ -14,6 +14,7 @@ var cp = require('child_process');
 
 var glob = require('glob');
 var mkdirp = require('mkdirp');
+var chalk = require('chalk');
 
 var util = {
 
@@ -149,7 +150,33 @@ var util = {
         fs.writeFileSync(target, fs.readFileSync(file));
       });
     }
-  }
+  },
+
+  // compiler pre-process
+  preProcess: function(config) {
+    var newConfig;
+    try {
+      var webpackCfg = require(util.cwdPath('webpack.config.js'));
+      newConfig = typeof webpackCfg === 'function' ? webpackCfg(config) : webpackCfg;
+    } catch (e) {
+      if (!/Cannot find module.+webpack\.config\.js/.test(e.toString())) {
+        console.error(chalk.red('Error in "webpack.config.js"\n' + e.stack));
+        process.exit(1);
+      }
+    }
+    return newConfig || config;
+  },
+
+  // webpack build failed
+  buildFail: function(msg) {
+    console.error(chalk.red('\n' + chalk.bold('Webpack Build Failed.') + '\n' + msg));
+    process.exit(1);
+  },
+
+  // log after finish
+  finishLog: function(startStamp) {
+    console.log(chalk.green.bold('Finished in ' + ((Date.now() - startStamp) / 1000).toFixed(2) + 's'));
+  },
 };
 
 module.exports = util;
