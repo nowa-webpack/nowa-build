@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-01-19 22:15:46
+* @Last Modified time: 2017-03-16 14:31:12
 */
 
 'use strict';
@@ -57,6 +57,7 @@ module.exports = function(options, firstRun) {
     query: {
       plugins: util.babel('plugin', [
         'add-module-exports',
+        'transform-decorators-legacy',
         'transform-es3-member-expression-literals',
         'transform-es3-property-literals',
         {
