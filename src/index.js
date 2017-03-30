@@ -41,6 +41,7 @@ module.exports = {
     [ '    --polyfill', 'use core-js to do polyfills' ],
     [ '    --mangle', 'mangle varibles when minify' ],
     [ '    --alias', 'path alias' ],
+    [ '    --publicPath <path>', 'set publicPath in webpack'],
   ],
 
   action: function(options) {
@@ -74,6 +75,7 @@ module.exports = {
     })(typeof options.alias === 'object' ? options.alias : {
       i18n: 'i18n'
     });
+    var publicPath = options.publicPath || '/';
 
     // start time stamp
     var startStamp = Date.now();
@@ -186,7 +188,7 @@ module.exports = {
           output: {
             path: util.cwdPath(dist),
             filename: '[name]' + util.suffixByVars(vars, buildvars) + '.js',
-            publicPath: '/'
+            publicPath: publicPath
           },
           plugins: plugins.concat([
             new webpack.DefinePlugin(util.parseVars(vars))
@@ -204,7 +206,7 @@ module.exports = {
           output: {
             path: util.cwdPath(dist),
             filename: '[name].js',
-            publicPath: '/'
+            publicPath: publicPath
           },
           plugins: plugins,
           resolve: resolve,
@@ -261,7 +263,7 @@ module.exports = {
         output: {
           path: util.cwdPath(dist),
           filename: '[name].js',
-          publicPath: '/'
+          publicPath: publicPath
         },
         plugins: plugins,
         resolve: resolve,
