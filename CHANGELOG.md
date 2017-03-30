@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.15.0 (2017-03-30)
+
+* [feature] Add `--publicPath` flag.
+
+> https://github.com/nowa-webpack/nowa-build/pull/16
+
 ## 1.14.0 (2017-03-16)
 
 * [feature] Add transform-decorators plugin.
