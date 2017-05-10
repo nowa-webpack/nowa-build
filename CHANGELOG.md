@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.15.1 (2017-05-10)
+
+* [fix] .ts files support jsx.
+
 ## 1.15.0 (2017-03-30)
 
 * [feature] Add `--publicPath` flag.
