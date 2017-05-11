@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-05-10 23:42:50
+* @Last Modified time: 2017-05-11 18:05:40
 */
 
 'use strict';
@@ -51,7 +51,7 @@ module.exports = function(options, firstRun) {
     }
   }
   return [{
-    test: /\.[jt]sx?$/,
+    test: /\.jsx?$/,
     loader: 'babel-loader',
     include: srcPath,
     query: {
