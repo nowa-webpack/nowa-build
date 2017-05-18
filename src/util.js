@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 17:15:36
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-03-12 18:34:49
+* @Last Modified time: 2017-05-18 00:30:12
 */
 
 'use strict';
@@ -15,6 +15,7 @@ var cp = require('child_process');
 var glob = require('glob');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
+var webpack = require('webpack');
 
 var util = {
 
@@ -163,7 +164,7 @@ var util = {
     var newConfig;
     try {
       var webpackCfg = require(util.cwdPath('webpack.config.js'));
-      newConfig = typeof webpackCfg === 'function' ? webpackCfg(config) : webpackCfg;
+      newConfig = typeof webpackCfg === 'function' ? webpackCfg(config, webpack) : webpackCfg;
     } catch (e) {
       if (!/Cannot find module.+webpack\.config\.js/.test(e.toString())) {
         console.error(chalk.red('Error in "webpack.config.js"\n' + e.stack));
