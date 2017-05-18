@@ -53,6 +53,7 @@
     "typescript": "~2.1.5",
     "uglify-js": "~2.6.2",
     "url-loader": "~0.5.7",
-    "webpack": "~1.13.0"
+    "webpack": "~1.13.0",
+    "webpack-bundle-analyzer": "^2.8.1"
   }
 }

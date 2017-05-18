@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-03-12 19:56:16
+* @Last Modified time: 2017-05-18 10:17:42
 */
 
 'use strict';
@@ -12,6 +12,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var Progress = require('progress');
 var Balancer = require('load-balancer');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var util = require('./util');
 var loader = require('./loader');
@@ -42,6 +43,7 @@ module.exports = {
     [ '    --mangle', 'mangle varibles when minify' ],
     [ '    --alias', 'path alias' ],
     [ '    --publicPath <path>', 'set publicPath in webpack'],
+    [ '    --analyse [port]', 'analyse bundle size'],
   ],
 
   action: function(options) {
@@ -76,6 +78,7 @@ module.exports = {
       i18n: 'i18n'
     });
     var publicPath = options.publicPath || '/';
+    var analyse = options.analyse;
 
     // start time stamp
     var startStamp = Date.now();
@@ -127,6 +130,11 @@ module.exports = {
       plugins.push(new webpack.ProgressPlugin(function handler(percentage) {
         bar.tick(percentage - oldPercentage);
         oldPercentage = percentage;
+      }));
+    }
+    if (analyse) {
+      plugins.push(new BundleAnalyzerPlugin({
+        analyzerPort: parseInt(analyse) || '8888'
       }));
     }
 

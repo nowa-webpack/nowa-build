@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.0 (2017-05-18)
+
+* [feature] Inject `webpack` to user defined config.
+* [feature] Add analyse tool, `--analyse`.
+
 ## 1.15.2 (2017-05-11)
 
 * [fix] Revert to 1.15.0.
