@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.1 (2017-05-18)
+
+* [improve] `--analyse [port]` if port is not specified, open local html.
+
 ## 1.16.0 (2017-05-18)
 
 * [feature] Inject `webpack` to user defined config.

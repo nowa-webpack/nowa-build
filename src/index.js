@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-05-18 10:17:42
+* @Last Modified time: 2017-05-18 10:40:54
 */
 
 'use strict';
@@ -133,8 +133,11 @@ module.exports = {
       }));
     }
     if (analyse) {
+      var analysePort = parseInt(analyse);
       plugins.push(new BundleAnalyzerPlugin({
-        analyzerPort: parseInt(analyse) || '8888'
+        analyzerMode: analysePort > 0 ? 'server' : 'static',
+        analyzerPort: analysePort || 8888,
+        reportFilename: 'webpack-bundle-analyzer-report.html'
       }));
     }
 
