@@ -2,7 +2,7 @@
 * @Author: gbk <ck0123456@gmail.com>
 * @Date:   2016-04-21 17:34:00
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-05-18 10:40:54
+* @Last Modified time: 2017-05-19 13:22:05
 */
 
 'use strict';
@@ -137,7 +137,7 @@ module.exports = {
       plugins.push(new BundleAnalyzerPlugin({
         analyzerMode: analysePort > 0 ? 'server' : 'static',
         analyzerPort: analysePort || 8888,
-        reportFilename: 'webpack-bundle-analyzer-report.html'
+        reportFilename: util.cwdPath('webpack-bundle-analyzer-report.html')
       }));
     }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.2 (2017-05-19)
+
+* [improve] Move analyse report file to project dir.
+
 ## 1.16.1 (2017-05-18)
 
 * [improve] `--analyse [port]` if port is not specified, open local html.
