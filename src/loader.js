@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-02 22:07:46
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-06-21 20:08:50
+* @Last Modified time: 2017-07-06 19:36:37
 */
 
 'use strict';
@@ -114,7 +114,7 @@ module.exports = function(options, firstRun) {
     include: srcPath
   }, {
     test: /\.(png|jpe?g|gif|woff|woff2|ttf|otf)$/,
-    loader: 'url-loader?limit=10240&publicPath=./',
+    loader: 'url-loader?limit=10240&publicPath=' + (options.publicPath || './'),
     include: srcPath
   }, {
     test: /\.tsx?$/,

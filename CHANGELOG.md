@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.1 (2017-07-06)
+
+* [fix] Fix image path error.
+
+> https://github.com/nowa-webpack/nowa-build/issues/21
+
 ## 1.17.0 (2017-06-21)
 
 * [feature] Support IE<=10 `static extends` on `loose` mode.
