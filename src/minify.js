@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-10 23:45:10
 * @Last Modified by:   gbk
-* @Last Modified time: 2016-11-18 23:24:51
+* @Last Modified time: 2017-07-27 15:05:36
 */
 
 'use strict';
@@ -10,7 +10,7 @@
 var fs = require('fs');
 
 var Balancer = require('load-balancer');
-var UglifyJs = require('uglify-js');
+var UglifyJs = require('uglify-es');
 var postcss = require('postcss');
 var cssnano = require('cssnano');
 var processer = new postcss([
@@ -39,13 +39,15 @@ new Balancer.Worker().receive(function(master, context, file, callback) {
   // minify js file
   if (/\.js$/.test(file)) {
     console.log('Minify file: ' + file);
-    var result = UglifyJs.minify(file, {
+    var result = UglifyJs.minify(fs.readFileSync(file, 'utf-8'), {
       mangle: context.mangle,
       compress: {
         warnings: false,
         drop_console: !context.keepconsole
       },
-      comments: false
+      output: {
+        comments: false,
+      }
     });
     fs.writeFileSync(file.replace(/\.js$/, context.minifyExtension + '.js'), result.code);
     callback();

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.18.0 (2017-07-27)
+
+* [feature] Support ES6 uglify.
+
+> https://github.com/nowa-webpack/nowa-build/issues/22
+
 ## 1.17.1 (2017-07-06)
 
 * [fix] Fix image path error.
