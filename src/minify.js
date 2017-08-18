@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-10 23:45:10
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-07-27 15:05:36
+* @Last Modified time: 2017-08-18 14:53:06
 */
 
 'use strict';
@@ -25,6 +25,7 @@ var processer = new postcss([
       add: true,
       browsers: [
         '> 1%',
+        'IE >= 9',
         'iOS >= 7',
         'Android >= 2.3',
         'FireFoxAndroid >= 46'

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.18.1 (2017-08-18)
+
+* [fix] CSS autoprefixer support IE9.
+
+> https://github.com/nowa-webpack/nowa-build/issues/23
+
 ## 1.18.0 (2017-07-27)
 
 * [feature] Support ES6 uglify.
