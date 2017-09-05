@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.19.0 (2017-09-05)
+
+* [feature] Update version of ts-loader.
+
 ## 1.18.1 (2017-08-18)
 
 * [fix] CSS autoprefixer support IE9.
