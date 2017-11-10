@@ -2,7 +2,7 @@
 * @Author: gbk
 * @Date:   2016-05-10 23:45:10
 * @Last Modified by:   gbk
-* @Last Modified time: 2017-08-18 14:53:06
+* @Last Modified time: 2017-11-10 16:15:21
 */
 
 'use strict';
@@ -21,6 +21,7 @@ var processer = new postcss([
     postcssZindex: {
       disable: true
     },
+    reduceIdents: false,
     autoprefixer: {
       add: true,
       browsers: [

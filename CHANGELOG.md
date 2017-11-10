@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.1 (2017-11-10)
+
+* [fix] Disable renaming of at-rules such as @keyframes.
+
+> https://github.com/nowa-webpack/nowa-build/issues/25
+
 ## 1.19.0 (2017-09-05)
 
 * [feature] Update version of ts-loader.
