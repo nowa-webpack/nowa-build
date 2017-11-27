@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.20.0 (2017-11-27)
+
+* [feature] Remove include restriction for several loader.
+
+> https://github.com/nowa-webpack/nowa-build/pull/26
+
 ## 1.19.1 (2017-11-10)
 
 * [fix] Disable renaming of at-rules such as @keyframes.
