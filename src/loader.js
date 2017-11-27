@@ -86,19 +86,15 @@ module.exports = function(options, firstRun) {
   }, {
     test: /\.css$/,
     loader: makeLoader(),
-    include: srcPath
   }, {
     test: /\.less$/,
     loader: makeLoader('less'),
-    include: srcPath
   }, {
     test: /\.styl$/,
     loader: makeLoader('stylus'),
-    include: srcPath
   }, {
     test: /\.svg$/,
     loader: 'babel-loader',
-    include: srcPath,
     query: {
       presets: presets,
       cacheDirectory: cacheDirectory,
@@ -107,15 +103,12 @@ module.exports = function(options, firstRun) {
   }, {
     test: /\.svg$/,
     loader: 'svg2react-loader',
-    include: srcPath
   }, {
     test: /\.json$/,
     loader: 'json-loader',
-    include: srcPath
   }, {
     test: /\.(png|jpe?g|gif|woff|woff2|ttf|otf)$/,
     loader: 'url-loader?limit=10240&publicPath=' + (options.publicPath || './'),
-    include: srcPath
   }, {
     test: /\.tsx?$/,
     loader: 'ts-loader',
