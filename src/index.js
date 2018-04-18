@@ -119,7 +119,9 @@ module.exports = {
       new webpack.optimize.OccurenceOrderPlugin()
     ];
     if (exportcss) {
-      plugins.push(new ExtractTextPlugin('[name].css'));
+      plugins.push(new ExtractTextPlugin('[name].css', {
+        allChunks: !pages // 如果用户以单页形式进行代码分离。需要把其他chunk的css一同抽到app.css里
+      }));
     }
     if (showProgress) {
       var bar = new Progress('webpack compile [:bar]', {
