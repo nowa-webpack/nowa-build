@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.20.1 (2018-04-19)
+
+* [fix] Split css on multi-pages mode.
+
 ## 1.20.0 (2017-11-27)
 
 * [feature] Remove include restriction for several loader.
