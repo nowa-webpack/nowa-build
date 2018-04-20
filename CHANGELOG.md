@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.21.0 (2018-04-20)
+
+* [feat] --keepcss flag
+> each build creates its own css
+
 ## 1.20.1 (2018-04-19)
 
 * [fix] Split css on multi-pages mode.
