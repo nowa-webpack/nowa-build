@@ -62,7 +62,7 @@ module.exports = {
     };
     var loose = options.loose;
     var keepconsole = options.keepconsole;
-    var keepcss = option.keepcss;
+    var keepcss = options.keepcss;
     var skipminify = options.skipminify;
     var showProgress = options.progress;
     var exportcss = options.exportcss !== false;
