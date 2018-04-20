@@ -33,6 +33,7 @@ module.exports = {
     [ '    --externals', 'webpack external varibles' ],
     [ '-o, --loose', 'use babel es2015 loose mode to transform codes' ],
     [ '-c, --keepconsole', 'keep `console.log`' ],
+    [ '    --keepcss', 'keep non-extracted css in all builds'],
     [ '    --skipminify', 'skip minify js and css' ],
     [ '-p, --progress', 'show progress' ],
     [ '    --exportcss', 'export css files' ],
@@ -61,6 +62,7 @@ module.exports = {
     };
     var loose = options.loose;
     var keepconsole = options.keepconsole;
+    var keepcss = option.keepcss;
     var skipminify = options.skipminify;
     var showProgress = options.progress;
     var exportcss = options.exportcss !== false;
@@ -119,9 +121,7 @@ module.exports = {
       new webpack.optimize.OccurenceOrderPlugin()
     ];
     if (exportcss) {
-      plugins.push(new ExtractTextPlugin('[name].css', {
-        allChunks: !pages // 如果用户以单页形式进行代码分离。需要把其他chunk的css一同抽到app.css里
-      }));
+      plugins.push(new ExtractTextPlugin('[name].css')); // allChunks 的会带来css的顺序问题
     }
     if (showProgress) {
       var bar = new Progress('webpack compile [:bar]', {
@@ -211,7 +211,7 @@ module.exports = {
           externals: externals,
           cache: true,
           module: {
-            loaders: loader(options, index === 0)
+            loaders: loader(options,  keepcss || index === 0)
           }
         });
       }) : util.preProcess({
@@ -227,7 +227,7 @@ module.exports = {
           externals: externals,
           cache: true,
           module: {
-            loaders: loader(options)
+            loaders: loader(options, true),
           }
         });
 
