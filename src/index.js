@@ -18,6 +18,19 @@ var util = require('./util');
 var loader = require('./loader');
 var pkg = require('../package.json');
 
+var parseJSONString = function(stringOrAny) {
+  if (typeof stringOrAny !== 'string') {
+    return stringOrAny;
+  } else {
+    try {
+      return JSON.parse(stringOrAny);
+    } catch (e) {
+      console.error(e);
+      return stringOrAny;
+    }
+  }
+};
+
 // plugin defination
 module.exports = {
 
@@ -28,8 +41,8 @@ module.exports = {
     [ '-d, --dist <dir>', 'build directory, default to `dist`', 'dist' ],
     [ '-e  --entry <file>', 'app entry, default to `app/app.js`', 'app/app.js' ],
     [ '    --pages [pages]', 'add multi-page entries' ],
-    [ '    --buildvars', 'build varibles' ],
-    [ '    --vars', 'runtime varibles' ],
+    [ '    --buildvars <json>', 'build varibles' ],
+    [ '    --vars <json>', 'runtime varibles' ],
     [ '    --externals', 'webpack external varibles' ],
     [ '-o, --loose', 'use babel es2015 loose mode to transform codes' ],
     [ '-c, --keepconsole', 'keep `console.log`' ],
@@ -54,8 +67,8 @@ module.exports = {
     var dist = options.dist;
     var entry = options.entry;
     var pages = options.pages;
-    var vars = options.vars || {};
-    var buildvars = util.parseBuildVars(vars, options.buildvars || {});
+    var vars = parseJSONString(options.vars) || {};
+    var buildvars = util.parseBuildVars(vars, parseJSONString(options.buildvars) || {});
     var externals = options.externals || {
       'react': 'window.React',
       'react-dom': 'window.ReactDOM || window.React'
