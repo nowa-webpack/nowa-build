@@ -1,4 +1,9 @@
 # Changelog
+## 1.22.0 (2018-07-11)
+
+* [feat] --vars & --buildvars support json format
+
+> https://github.com/nowa-webpack/nowa-build/pull/29
 
 ## 1.21.0 (2018-04-20)
 
