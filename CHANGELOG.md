@@ -1,4 +1,9 @@
 # Changelog
+## 1.23.0 (2018-10-11)
+
+* [improve] deps be same with nowa-server
+* [improve] remove html comments
+
 ## 1.22.0 (2018-07-11)
 
 * [feat] --vars & --buildvars support json format

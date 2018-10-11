@@ -16,6 +16,7 @@ var glob = require('glob');
 var mkdirp = require('mkdirp');
 var chalk = require('chalk');
 var webpack = require('webpack');
+var minify = require('html-minifier').minify;
 
 var util = {
 
@@ -154,7 +155,16 @@ var util = {
         console.log('Copy file: ' + file);
         var target = path.join(targetDir, path.relative(baseDir, file));
         mkdirp.sync(path.dirname(target));
-        fs.writeFileSync(target, fs.readFileSync(file));
+        var content = fs.readFileSync(file);
+        if (/\.html?$/.test(file)) {
+          content = minify(content.toString('utf-8'), {
+            removeComments: true,
+            collapseWhitespace: true,
+            conservativeCollapse: true,
+            preserveLineBreaks: true,
+          });
+        }
+        fs.writeFileSync(target, content);
       });
     }
   },
